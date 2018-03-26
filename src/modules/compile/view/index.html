@@ -26,7 +26,7 @@ int main()
 <div style="margin-top: 10px">
     <div style="text-align: center"><button id="btn">编译</button></div>
     <h5>显示结果：</h5>
-    <p></p>
+    <p id="result"></p>
 </div>
 </body>
 </html>
@@ -53,6 +53,8 @@ int main()
                 success: function (rep) {
                     if(rep.error) {
                         alert(rep.error);
+                    }else{
+                        $("#result").html(rep.output)
                     }
                 }
             })
