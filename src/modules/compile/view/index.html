@@ -2,9 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>在线C++编译</title>
+    <script src="/static/js/codemirror.js"></script>
+    <script src="/static/js/clike/clike.js"></script>
+    <script src="/static/js/addon/edit/matchbrackets.js"></script>
+    <script src="/static/js/addon/hint/show-hint.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <link rel="stylesheet" href="/static/css/codemirror.css">
 </head>
 <body>
-1233
+ <div style="border:1px solid #ddd">
+     <textarea id="cpp-code">
+        #include<iostream>
+        using namespace std;
+        int main()
+        {
+            cout<<"Hello World from C++";
+            return 0;
+        }
+</textarea>
+ </div>
+<div style="margin-top: 10px">
+    <div style="text-align: center"><button id="btn">编译</button></div>
+    <h5>显示结果：</h5>
+    <p></p>
+</div>
 </body>
 </html>
+
+<script>
+
+    $(function() {
+
+        var cppEditor = CodeMirror.fromTextArea(document.getElementById("cpp-code"), {
+            lineNumbers: true,
+            matchBrackets: true,
+            mode: "text/x-c++src"
+        });
+
+        $("#btn").on('click',function () {
+            var val = cppEditor.getValue();
+            $.ajax({
+                url:'/compile',
+                type:'post',
+                data:{
+                    code: val
+                },
+                success: function (rep) {
+                    if(rep.error) {
+                        alert(rep.error);
+                    }
+                }
+            })
+
+        })
+
+
+    })
+
+</script>

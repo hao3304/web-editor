@@ -1,14 +1,15 @@
 import { Controller, Post, Get, Body, Res } from '@nestjs/common'
-import { CompileDto} from "../dto/compile";
+import { CompileDto} from "../dto/compile"
 import * as nunjucks from 'nunjucks'
-
+import * as path from 'path'
 const compiler = require('compilex');
+var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.resolve(__dirname,'../view')),{noCache:true});
 
 @Controller()
 export class compileController {
 
     @Post('compile')
-    public async root(@Body compileDto: CompileDto):string {
+    public async root(@Body() compileDto: CompileDto):string {
         if(!compileDto.code) {
             return 'code is invalid'
         }
@@ -16,8 +17,8 @@ export class compileController {
     }
 
     @Get("/")
-    public async index() {
-        return  nunjucks.render('/Users/jack/WebstormProjects/web-editor/views/index.html');
+    public  index() {
+        return env.render('index.html')
     }
 
     private compile( code ) {
