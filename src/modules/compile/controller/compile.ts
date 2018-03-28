@@ -13,22 +13,30 @@ export class compileController {
         if(!compileDto.code) {
             return 'code is invalid'
         }
-        return await this.compile(compileDto.code);
+        return await this.compile(compileDto);
     }
+
 
     @Get("/")
     public  index() {
         return env.render('index.html')
     }
 
-    private compile( code ) {
+    private compile( compileDto: CompileDto ) {
         var options = {stats : true}; //prints stats on console
         compiler.init(options);
         var envData = { OS : "linux" , cmd : "gcc" };
         return new Promise((resolve,reject)=>{
-            compiler.compileCPP(envData , code, function (rep) {
-                resolve(rep);
-            });
+            if(compileDto.input == 'true') {
+                compiler.compileCPPWithInput(envData ,compileDto.code, compileDto.val, function (rep) {
+                    resolve(rep);
+                });
+            }else{
+                compiler.compileCPP(envData , compileDto.code, function (rep) {
+                    resolve(rep);
+                });
+            }
+
         })
     }
 }

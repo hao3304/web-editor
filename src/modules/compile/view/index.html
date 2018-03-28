@@ -24,7 +24,17 @@ int main()
 </textarea>
  </div>
 <div style="margin-top: 10px">
-    <div style="text-align: center"><button id="btn">编译</button></div>
+    
+    <div>
+        <textarea placeholder="请输入" style="width:100%;display: none" id="input"  rows="6"></textarea>
+    </div>
+    <div style="text-align: center">
+        Compile With Input :
+        <input type="checkbox"  id="inputCheck"  />
+    </div>
+    <div style="text-align: center">
+        <button id="btn">编译</button>
+    </div>
     <h5>显示结果：</h5>
     <p id="result"></p>
 </div>
@@ -44,11 +54,16 @@ int main()
 
         $("#btn").on('click',function () {
             var val = cppEditor.getValue();
+
+
+
             $.ajax({
                 url:'/compile',
                 type:'post',
                 data:{
-                    code: val
+                    code: val,
+                    input: $('#inputCheck')[0].checked,
+                    val: $('#input').val()
                 },
                 success: function (rep) {
                     if(rep.error) {
@@ -58,6 +73,15 @@ int main()
                     }
                 }
             })
+
+        })
+
+        $('#inputCheck').on('change',function (e) {
+            if(e.target.checked) {
+                $('#input').show();
+            }else{
+                $('#input').hide();
+            }
 
         })
 
