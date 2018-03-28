@@ -32,7 +32,7 @@ export class compileController {
                     resolve(rep);
                 });
             }else{
-                compiler.compileCPP(envData , compileDto.code, function (rep) {
+                compiler.compileCPPWithInput(envData , compileDto.code,' ', function (rep) {
                     resolve(rep);
                 });
             }
